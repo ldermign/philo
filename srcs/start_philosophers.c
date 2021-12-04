@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 15:46:07 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 00:15:45 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/04 14:03:30 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int	start_threads_philo_and_checkers(t_s *s)
 	i = 0;
 	while (i < s->data.nbr_philo)
 	{
-		if (pthread_create(&s->thrd[i].philo, NULL, &routine, &s->thrd[i]) != 0)
+		if (pthread_create(&s->thrd[i].philo, NULL,
+				&routine, &s->thrd[i]) != 0)
 			return (EXIT_FAILURE);
 		i++;
 	}

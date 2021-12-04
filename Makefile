@@ -6,7 +6,7 @@
 #    By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 15:08:29 by ldermign          #+#    #+#              #
-#    Updated: 2021/12/04 00:36:57 by ldermign         ###   ########.fr        #
+#    Updated: 2021/12/04 14:02:33 by ldermign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ SRCS	=	srcs/main.c \
 			srcs/init.c \
 			srcs/start_philosophers.c \
 			srcs/routine.c \
-			srcs/think_eat_sleep.c \
+			srcs/eat.c \
+			srcs/think_sleep.c \
 			srcs/checkers.c \
 			srcs/free.c \
 			srcs/utils_parsing.c \
@@ -33,7 +34,7 @@ INCS	=	./incs/
 
 CC		=	clang
 
-CFLAGS	=	-Wall -Wextra -Werror -DLinux -I ${INCS}
+CFLAGS	=	-Wall -Wextra -Werror -DLinux -I ${INCS} -g3 #-fsanitize=thread
 
 RM		=	rm -rf
 

@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 13:10:12 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 00:32:48 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/04 14:01:51 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,38 @@ int	unlock_both_fork(t_philo *t, int fork1, int fork2, int code_err)
 	return (0);
 }
 
+int	give_fork_their_places(t_philo *t, int *fork1, int *fork2)
+{
+	if (t->more->args->nbr_philo == 2)
+	{
+		if (t->id == 0)
+		{
+			*fork1 = 0;
+			*fork2 = 1;
+		}
+		else
+		{
+			*fork1 = -1;
+			*fork2 = 0;
+		}
+		return (0);
+	}
+	*fork1 = 0;
+	if (t->id != t->more->args->nbr_philo - 1)
+		*fork2 = 1;
+	else
+		*fork2 = -(t->more->args->nbr_philo - 1);
+	return (0);
+}
+
 int	take_both_fork(t_philo *t)
 {
 	int	fork1;
 	int	fork2;
 
-	fork1 = t->id;
 	if (mtx_check_one_dead_or_all_full(t->more->death_full) == 1)
 		return (1);
-	if (t->id == t->more->args->nbr_philo - 1)
-		fork2 = 0;
-	else
-		fork2 = t->id + 1;
+	give_fork_their_places(t, &fork1, &fork2);
 	pthread_mutex_lock(&t[fork1].fourchette);
 	if (mtx_check_one_dead_or_all_full(t->more->death_full) == 1
 		|| fork1 == fork2)
@@ -63,31 +83,9 @@ int	take_both_fork(t_philo *t)
 		return (1);
 	}
 	pthread_mutex_lock(&t[fork2].fourchette);
-	printf("%ld [%d] has taken a fork.\n%ld [%d] has taken a fork.\n",
-		get_time(t->more->time_zero), t->id + 1, get_time(t->more->time_zero),
-		t->id + 1);
+	if (mtx_check_one_dead_or_all_full(t->more->death_full) == 1)
+		return (unlock_both_fork(t, fork1, fork2, 1));
 	if (is_eating(t) == 1)
 		return (unlock_both_fork(t, fork1, fork2, 1));
 	return (unlock_both_fork(t, fork1, fork2, 0));
-}
-
-int	is_sleeping(t_philo *thrd)
-{
-	if (mtx_check_one_dead_or_all_full(thrd->more->death_full) == 1)
-		return (1);
-	printf("%ld [%d] is sleeping.\n", get_time(thrd->more->time_zero),
-		thrd->id + 1);
-	if (ft_usleep(thrd->more->args->time_sleep * 1000,
-			thrd->more->death_full) == 1)
-		return (1);
-	return (0);
-}
-
-int	is_thinking(t_philo *thrd)
-{
-	if (mtx_check_one_dead_or_all_full(thrd->more->death_full) == 1)
-		return (1);
-	printf("%ld [%d] is thinking.\n", get_time(thrd->more->time_zero),
-		thrd->id + 1);
-	return (0);
 }
