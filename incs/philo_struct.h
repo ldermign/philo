@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 13:37:14 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 00:12:39 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/04 14:48:06 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct s_philo
 {
 	pthread_mutex_t	fourchette;
 	int				id;
+	int				fork1;
+	int				fork2;
 	pthread_t		philo;
 	pthread_mutex_t	mtx_time_eaten;
 	int				time_eaten;

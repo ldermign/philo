@@ -6,11 +6,31 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:15:56 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/03 15:07:20 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/04 14:59:16 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+void	get_right_left_fork(t_philo *thrd, int id_philo, int nbr_philo)
+{
+	if (id_philo == nbr_philo)
+	{
+		thrd->fork1 = -(nbr_philo - 1);
+		thrd->fork2 = 0;
+		return ;
+	}
+	if (id_philo % 2 == 0)
+	{
+		thrd->fork1 = 0;
+		thrd->fork2 = 1;
+	}
+	else
+	{
+		thrd->fork1 = 1;
+		thrd->fork2 = 0;
+	}
+}
 
 int	init_s_threads(t_s *s, void *addr_more, int nbr_philo)
 {
@@ -23,6 +43,7 @@ int	init_s_threads(t_s *s, void *addr_more, int nbr_philo)
 		s->thrd[i].id = i;
 		s->thrd[i].time_eaten = 0;
 		s->thrd[i].date_of_last_meal = 0;
+		get_right_left_fork(&s->thrd[i], i, nbr_philo);
 		if (pthread_mutex_init(&(s->thrd[i].mtx_time_eaten), NULL) != 0)
 			return (EXIT_FAILURE);
 		if (pthread_mutex_init(&(s->thrd[i].mtx_date_of_last_meal), NULL) != 0)

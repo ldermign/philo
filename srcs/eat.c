@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   think_eat_sleep.c                                  :+:      :+:    :+:   */
+/*   eat.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 13:10:12 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 14:01:51 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/04 15:04:25 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,49 +43,21 @@ int	unlock_both_fork(t_philo *t, int fork1, int fork2, int code_err)
 	return (0);
 }
 
-int	give_fork_their_places(t_philo *t, int *fork1, int *fork2)
-{
-	if (t->more->args->nbr_philo == 2)
-	{
-		if (t->id == 0)
-		{
-			*fork1 = 0;
-			*fork2 = 1;
-		}
-		else
-		{
-			*fork1 = -1;
-			*fork2 = 0;
-		}
-		return (0);
-	}
-	*fork1 = 0;
-	if (t->id != t->more->args->nbr_philo - 1)
-		*fork2 = 1;
-	else
-		*fork2 = -(t->more->args->nbr_philo - 1);
-	return (0);
-}
-
 int	take_both_fork(t_philo *t)
 {
-	int	fork1;
-	int	fork2;
-
 	if (mtx_check_one_dead_or_all_full(t->more->death_full) == 1)
 		return (1);
-	give_fork_their_places(t, &fork1, &fork2);
-	pthread_mutex_lock(&t[fork1].fourchette);
+	pthread_mutex_lock(&t[t->fork1].fourchette);
 	if (mtx_check_one_dead_or_all_full(t->more->death_full) == 1
-		|| fork1 == fork2)
+		|| t->more->args->nbr_philo == 1)
 	{
-		pthread_mutex_unlock(&t[fork1].fourchette);
+		pthread_mutex_unlock(&t[t->fork1].fourchette);
 		return (1);
 	}
-	pthread_mutex_lock(&t[fork2].fourchette);
+	pthread_mutex_lock(&t[t->fork2].fourchette);
 	if (mtx_check_one_dead_or_all_full(t->more->death_full) == 1)
-		return (unlock_both_fork(t, fork1, fork2, 1));
+		return (unlock_both_fork(t, t->fork1, t->fork2, 1));
 	if (is_eating(t) == 1)
-		return (unlock_both_fork(t, fork1, fork2, 1));
-	return (unlock_both_fork(t, fork1, fork2, 0));
+		return (unlock_both_fork(t, t->fork1, t->fork2, 1));
+	return (unlock_both_fork(t, t->fork1, t->fork2, 0));
 }
