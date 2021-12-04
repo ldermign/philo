@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 15:06:48 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 00:35:46 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/04 17:06:41 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,8 @@ int		parsing(int ac, char **av, t_s *s);
 **	INIT
 */
 
-int		init_s_threads(t_s *s, void *addr_more, int nbr_philo);
+int		init_s_threads(t_s *s, int nbr_philo);
 int		init_s_checkers(t_check *chck);
-int		init_s_more(t_s *s, int nbr_philo);
 
 /*
 **	START

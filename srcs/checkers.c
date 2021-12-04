@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 08:21:16 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 14:03:03 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/04 19:10:32 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,14 @@
 
 static void	someone_is_dead_abort(t_check *chck, int id)
 {
-	pthread_mutex_lock(&chck->mtx_first_death);
 	pthread_mutex_lock(&chck->mtx_wich_dead);
-	chck->first_death = 1;
 	chck->wich_dead = id;
-	pthread_mutex_unlock(&chck->mtx_first_death);
 	pthread_mutex_unlock(&chck->mtx_wich_dead);
 }
 
 static int	always_checking_if_someone_s_dead(t_s *s)
 {
 	int		i;
-	long	time_now;
 	long	time_till_last_meal;
 
 	i = 0;
@@ -33,9 +29,10 @@ static int	always_checking_if_someone_s_dead(t_s *s)
 	{
 		if (mtx_all_full(&s->chck, s->data.nbr_philo) == 1)
 			return (0);
-		time_now = get_time(s->thrd->more->time_zero);
 		pthread_mutex_lock(&s->thrd[i].mtx_date_of_last_meal);
-		time_till_last_meal = time_now - s->thrd[i].date_of_last_meal;
+		time_till_last_meal = get_time(s->thrd->time_zero)
+			- s->thrd[i].date_of_last_meal;
+		// printf("%ld for %d %ld, %ld\n", get_time(s->thrd->time_zero), i, time_till_last_meal, s->thrd[i].date_of_last_meal);
 		pthread_mutex_unlock(&s->thrd[i].mtx_date_of_last_meal);
 		if (time_till_last_meal > s->data.time_die)
 		{
@@ -61,26 +58,20 @@ void	*check_for_a_death_or_a_full_tummy(void *data)
 	t_s	*s;
 
 	s = (t_s *)data;
-	while (1)
+	if (always_checking_if_someone_s_dead(s) == 1)
 	{
-		if (always_checking_if_someone_s_dead(s) == 1)
+		while (1)
 		{
-			while (1)
+			if (mtx_all_dead(&s->chck, s->data.nbr_philo) == 1)
 			{
-				if (mtx_all_dead(&s->chck, s->data.nbr_philo) == 1)
-				{
-					printf("%ld [%d] died.\n",
-						get_time(s->thrd->more->time_zero),
-						s->chck.wich_dead + 1);
-					return (NULL);
-				}
+				printf("%ld [%d] died.\n",
+					get_time(s->thrd->time_zero),
+					s->chck.wich_dead);
+				return (NULL);
 			}
 		}
-		else
-		{
-			mtx_all_are_full(s);
-			return (NULL);
-		}
 	}
+	else
+		mtx_all_are_full(s);
 	return (NULL);
 }

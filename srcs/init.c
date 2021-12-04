@@ -6,48 +6,55 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:15:56 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 14:59:16 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/04 19:02:22 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	get_right_left_fork(t_philo *thrd, int id_philo, int nbr_philo)
+int	get_right_left_fork(int id_philo, int nbr_philo, int *fk1, int *fk2)
 {
-	if (id_philo == nbr_philo)
+	if (id_philo % 2 == 0 && id_philo != nbr_philo - 1)
 	{
-		thrd->fork1 = -(nbr_philo - 1);
-		thrd->fork2 = 0;
-		return ;
+		*fk1 = 0;
+		*fk2 = 1;
 	}
-	if (id_philo % 2 == 0)
+	else if (id_philo % 2 != 0 && id_philo != nbr_philo - 1)
 	{
-		thrd->fork1 = 0;
-		thrd->fork2 = 1;
+		*fk1 = 1;
+		*fk2 = 0;
+	}
+	else if (nbr_philo % 2 == 0)
+	{
+		*fk1 = 0;
+		*fk2 = -(nbr_philo - 1);
 	}
 	else
 	{
-		thrd->fork1 = 1;
-		thrd->fork2 = 0;
+		*fk1 = -(nbr_philo - 1);
+		*fk2 = 0;
 	}
+	return (0);
 }
 
-int	init_s_threads(t_s *s, void *addr_more, int nbr_philo)
+int	init_s_threads(t_s *s, int nbr_philo)
 {
 	int	i;
 
 	i = 0;
 	while (i < nbr_philo)
 	{
-		s->thrd[i].more = addr_more;
 		s->thrd[i].id = i;
 		s->thrd[i].time_eaten = 0;
 		s->thrd[i].date_of_last_meal = 0;
-		get_right_left_fork(&s->thrd[i], i, nbr_philo);
-		if (pthread_mutex_init(&(s->thrd[i].mtx_time_eaten), NULL) != 0)
+		get_right_left_fork(i, nbr_philo, &s->thrd[i].fork1, &s->thrd[i].fork2);
+		if (pthread_mutex_init(&s->thrd[i].fourchette, NULL) != 0)
 			return (EXIT_FAILURE);
 		if (pthread_mutex_init(&(s->thrd[i].mtx_date_of_last_meal), NULL) != 0)
 			return (EXIT_FAILURE);
+		s->thrd[i].args = &s->data;
+		s->thrd[i].death_full = &s->chck;
+		s->thrd[i].time_zero = get_time_in_milli();
 		i++;
 	}
 	return (EXIT_SUCCESS);
@@ -55,13 +62,10 @@ int	init_s_threads(t_s *s, void *addr_more, int nbr_philo)
 
 int	init_s_checkers(t_check *chck)
 {
-	chck->first_death = 0;
 	chck->wich_dead = -1;
 	chck->all_dead = 0;
 	chck->how_many_have_eaten = 0;
 	chck->all_full = 0;
-	if (pthread_mutex_init(&(chck->mtx_first_death), NULL) != 0)
-		return (EXIT_FAILURE);
 	if (pthread_mutex_init(&(chck->mtx_wich_dead), NULL) != 0)
 		return (EXIT_FAILURE);
 	if (pthread_mutex_init(&(chck->mtx_all_dead), NULL) != 0)
@@ -70,22 +74,5 @@ int	init_s_checkers(t_check *chck)
 		return (EXIT_FAILURE);
 	if (pthread_mutex_init(&(chck->mtx_all_full), NULL) != 0)
 		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
-}
-
-int	init_s_more(t_s *s, int nbr_philo)
-{
-	int				i;
-
-	i = 0;
-	while (i < nbr_philo)
-	{
-		if (pthread_mutex_init(&s->thrd[i].fourchette, NULL) != 0)
-			return (EXIT_FAILURE);
-		i++;
-	}
-	s->thrd->more->args = &s->data;
-	s->thrd->more->death_full = &s->chck;
-	s->thrd->more->time_zero = get_time_in_milli();
 	return (EXIT_SUCCESS);
 }

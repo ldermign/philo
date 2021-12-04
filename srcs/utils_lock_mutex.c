@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 08:36:37 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 00:30:02 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/04 15:24:43 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ int	mtx_all_full(t_check *chck, int nbr_philo)
 
 int	mtx_check_one_dead_or_all_full(t_check *chck)
 {
-	pthread_mutex_lock(&chck->mtx_first_death);
-	if (chck->first_death == 1)
+	pthread_mutex_lock(&chck->mtx_wich_dead);
+	if (chck->wich_dead != -1)
 	{
-		pthread_mutex_unlock(&chck->mtx_first_death);
+		pthread_mutex_unlock(&chck->mtx_wich_dead);
 		return (1);
 	}
-	pthread_mutex_unlock(&chck->mtx_first_death);
+	pthread_mutex_unlock(&chck->mtx_wich_dead);
 	pthread_mutex_lock(&chck->mtx_all_full);
 	if (chck->all_full == 1)
 	{

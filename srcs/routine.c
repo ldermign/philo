@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 13:08:49 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 14:02:55 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/04 19:40:50 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,23 @@ void	*routine(void *data)
 	t_philo	*thrd;
 
 	thrd = (t_philo *)data;
+	//if (thrd->id % 2 == 1)
+	//	usleep(5000);
 	while (1)
 	{
-		if (is_thinking(thrd) == 1)
-		{
-			one_is_dead(thrd->more->death_full);
-			return (NULL);
-		}
 		if (take_both_fork(thrd) == 1)
 		{
-			one_is_dead(thrd->more->death_full);
+			one_is_dead(thrd->death_full);
 			return (NULL);
 		}
 		if (is_sleeping(thrd) == 1)
 		{
-			one_is_dead(thrd->more->death_full);
+			one_is_dead(thrd->death_full);
+			return (NULL);
+		}
+		if (is_thinking(thrd) == 1)
+		{
+			one_is_dead(thrd->death_full);
 			return (NULL);
 		}
 	}

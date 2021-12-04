@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 13:37:14 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 14:48:06 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/04 19:02:36 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ typedef struct s_arg
 typedef struct s_checkers
 {
 	pthread_t		checker;
-	pthread_mutex_t	mtx_first_death;
-	bool			first_death;
 	pthread_mutex_t	mtx_wich_dead;
 	int				wich_dead;
 	pthread_mutex_t	mtx_all_dead;
@@ -37,13 +35,6 @@ typedef struct s_checkers
 	int				all_full;
 }	t_check;
 
-typedef struct s_storage
-{
-	t_ag			*args;
-	t_check			*death_full;
-	long			time_zero;
-}	t_store;
-
 typedef struct s_philo
 {
 	pthread_mutex_t	fourchette;
@@ -51,11 +42,12 @@ typedef struct s_philo
 	int				fork1;
 	int				fork2;
 	pthread_t		philo;
-	pthread_mutex_t	mtx_time_eaten;
 	int				time_eaten;
 	pthread_mutex_t	mtx_date_of_last_meal;
 	long			date_of_last_meal;
-	t_store			*more;
+	t_ag			*args;
+	t_check			*death_full;
+	long			time_zero;
 }	t_philo;
 
 typedef struct s_struct

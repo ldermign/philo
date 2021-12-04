@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/27 16:15:36 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/03 09:20:18 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/04 19:30:02 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	ft_usleep(long time, t_check *chck)
 
 	first_time = get_time_in_micro();
 	time_passed = 0;
-	while (time_passed < time)
+	while (time_passed < time) // get_time_in_micro - first_time < time)
 	{
 		if (mtx_check_one_dead_or_all_full(chck) == 1)
 			return (1);
