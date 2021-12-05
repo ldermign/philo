@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/27 16:15:36 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 19:30:02 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/05 10:22:19 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,13 @@ long	get_time_in_micro(void)
 int	ft_usleep(long time, t_check *chck)
 {
 	long	first_time;
-	long	time_passed;
-	long	time_after;
 
 	first_time = get_time_in_micro();
-	time_passed = 0;
-	while (time_passed < time) // get_time_in_micro - first_time < time)
+	while (get_time_in_micro() - first_time < time)
 	{
 		if (mtx_check_one_dead_or_all_full(chck) == 1)
 			return (1);
 		usleep(10);
-		time_after = get_time_in_micro();
-		time_passed = time_after - first_time;
 	}
 	return (0);
 }

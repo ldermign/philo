@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 13:10:12 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 19:02:10 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/05 10:33:50 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,10 @@ int	is_eating(t_philo *t)
 		return (1);
 	pthread_mutex_lock(&t->mtx_date_of_last_meal);
 	t->date_of_last_meal = get_time(t->time_zero);
+	pthread_mutex_unlock(&t->mtx_date_of_last_meal);
 	printf("%ld [%d] is eating.\n", get_time(t->time_zero), t->id);
 	if (ft_usleep(t->args->time_eat * 1000, t->death_full) == 1)
-	{
-		pthread_mutex_unlock(&t->mtx_date_of_last_meal);
 		return (1);
-	}
-	pthread_mutex_unlock(&t->mtx_date_of_last_meal);
 	t->time_eaten++;
 	if (t->time_eaten == t->args->must_eat_at_least)
 	{

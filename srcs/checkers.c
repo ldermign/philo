@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 08:21:16 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 19:10:32 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/05 10:32:32 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static int	always_checking_if_someone_s_dead(t_s *s)
 		pthread_mutex_lock(&s->thrd[i].mtx_date_of_last_meal);
 		time_till_last_meal = get_time(s->thrd->time_zero)
 			- s->thrd[i].date_of_last_meal;
-		// printf("%ld for %d %ld, %ld\n", get_time(s->thrd->time_zero), i, time_till_last_meal, s->thrd[i].date_of_last_meal);
 		pthread_mutex_unlock(&s->thrd[i].mtx_date_of_last_meal);
 		if (time_till_last_meal > s->data.time_die)
 		{

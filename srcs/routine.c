@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 13:08:49 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 19:40:50 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/05 10:21:17 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	*routine(void *data)
 	t_philo	*thrd;
 
 	thrd = (t_philo *)data;
-	//if (thrd->id % 2 == 1)
-	//	usleep(5000);
+	if (thrd->id % 2 == 1)
+		usleep(3000);
 	while (1)
 	{
 		if (take_both_fork(thrd) == 1)

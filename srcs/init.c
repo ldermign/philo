@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:15:56 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/04 19:02:22 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/05 10:51:19 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int	get_right_left_fork(int id_philo, int nbr_philo, int *fk1, int *fk2)
 		*fk1 = 1;
 		*fk2 = 0;
 	}
-	else if (nbr_philo % 2 == 0)
+	if (id_philo == nbr_philo - 1 && id_philo % 2 == 0)
 	{
 		*fk1 = 0;
 		*fk2 = -(nbr_philo - 1);
 	}
-	else
+	else if (id_philo == nbr_philo - 1 && id_philo % 2 != 0)
 	{
 		*fk1 = -(nbr_philo - 1);
 		*fk2 = 0;
