@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 13:10:12 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/05 11:55:27 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/05 12:24:27 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_eating(t_philo *t)
 	pthread_mutex_lock(&t->mtx_date_of_last_meal);
 	t->date_of_last_meal = get_time(t->time_zero);
 	pthread_mutex_unlock(&t->mtx_date_of_last_meal);
-	printf("%ld [%d] is eating.\n", get_time(t->time_zero), t->id);
+	printf("%ld %d is eating\n", get_time(t->time_zero), t->id + 1);
 	if (ft_usleep(t->args->time_eat * 1000, t->death_full) == 1)
 		return (1);
 	t->time_eaten++;
@@ -46,6 +46,7 @@ int	take_both_fork(t_philo *t)
 	if (mtx_check_one_dead_or_all_full(t->death_full) == 1)
 		return (1);
 	pthread_mutex_lock(&t[t->fork1].fourchette);
+	printf("%ld %d has taken a fork\n", get_time(t->time_zero), t->id + 1);
 	if (mtx_check_one_dead_or_all_full(t->death_full) == 1
 		|| t->args->nbr_philo == 1)
 	{
@@ -55,8 +56,7 @@ int	take_both_fork(t_philo *t)
 	pthread_mutex_lock(&t[t->fork2].fourchette);
 	if (mtx_check_one_dead_or_all_full(t->death_full) == 1)
 		return (unlock_both_fork(t, t->fork1, t->fork2, 1));
-	printf("%ld [%d] has taken a fork.\n", get_time(t->time_zero), t->id);
-	printf("%ld [%d] has taken a fork.\n", get_time(t->time_zero), t->id);
+	printf("%ld %d has taken a fork\n", get_time(t->time_zero), t->id + 1);
 	if (is_eating(t) == 1)
 		return (unlock_both_fork(t, t->fork1, t->fork2, 1));
 	return (unlock_both_fork(t, t->fork1, t->fork2, 0));

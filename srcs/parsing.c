@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 16:08:33 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/03 13:43:46 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/05 12:23:01 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,11 @@ int	parsing(int ac, char **av, t_s *s)
 		|| s->data.time_sleep < 60)
 	{
 		printf("Not enough time for philosohers to do anything...\n");
+		return (EXIT_FAILURE);
+	}
+	if (s->data.must_eat_at_least == 0)
+	{
+		printf("Wrong number for minimum to eat.\n");
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

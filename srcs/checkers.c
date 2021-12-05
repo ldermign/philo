@@ -6,7 +6,7 @@
 /*   By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 08:21:16 by ldermign          #+#    #+#             */
-/*   Updated: 2021/12/05 10:32:32 by ldermign         ###   ########.fr       */
+/*   Updated: 2021/12/05 12:16:12 by ldermign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ void	*check_for_a_death_or_a_full_tummy(void *data)
 		{
 			if (mtx_all_dead(&s->chck, s->data.nbr_philo) == 1)
 			{
-				printf("%ld [%d] died.\n",
+				printf("%ld %d died\n",
 					get_time(s->thrd->time_zero),
-					s->chck.wich_dead);
+					s->chck.wich_dead + 1);
 				return (NULL);
 			}
 		}
