@@ -6,7 +6,7 @@
 #    By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 15:08:29 by ldermign          #+#    #+#              #
-#    Updated: 2021/12/05 10:38:09 by ldermign         ###   ########.fr        #
+#    Updated: 2021/12/05 12:07:46 by ldermign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ INCS	=	./incs/
 
 CC		=	clang
 
-CFLAGS	=	-Wall -Wextra -Werror -DLinux -I ${INCS} -g3 -fsanitize=thread
+CFLAGS	=	-Wall -Wextra -Werror -DLinux -I ${INCS}
 
 RM		=	rm -rf
 
@@ -42,15 +42,12 @@ all:		${NAME}
 
 ${NAME}:	${OBJS}
 			@${CC} -lpthread ${CFLAGS} -o $@ $^
-# // entre $@ $^ y'a -ggdb3
 
 -include	${DEPS}
 
-.c.o:
-			@${CC} -c ${CFLAGS} -o $@ $^
-# %.o:%.c
-# @${CC} ${CFLAGS} -o $@ -c $<
-# @${CC} ${CFLAGS} -MMD -MP -MF ${@:.o=.d} -o $@ -c $<
+%.o:%.c
+			@${CC} ${CFLAGS} -o $@ -c $<
+			@${CC} ${CFLAGS} -MMD -MP -MF ${@:.o=.d} -o $@ -c $<
 
 clean:
 			@${RM} ${OBJS} ${DEPS}
