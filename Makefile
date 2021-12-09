@@ -6,7 +6,7 @@
 #    By: ldermign <ldermign@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 15:08:29 by ldermign          #+#    #+#              #
-#    Updated: 2021/12/05 12:23:35 by ldermign         ###   ########.fr        #
+#    Updated: 2021/12/09 11:33:09 by ldermign         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ INCS	=	./incs/
 
 CC		=	clang
 
-CFLAGS	=	-Wall -Wextra -Werror -DLinux -I ${INCS} -g3 -fsanitize=thread
+CFLAGS	=	-Wall -Wextra -Werror -DLinux -I ${INCS}
 
 RM		=	rm -rf
 
